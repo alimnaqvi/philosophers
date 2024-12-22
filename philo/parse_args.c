@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:10:22 by anaqvi            #+#    #+#             */
-/*   Updated: 2024/12/21 17:16:50 by anaqvi           ###   ########.fr       */
+/*   Updated: 2024/12/22 12:17:27 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	ft_atoi_error(char *s, unsigned int *num)
 	while (*s == ' ' || (*s >= 9 && *s <= 13))
 		s++;
 	if (determine_sign(s) == -1)
-		return(printf(ARG_STR_FORMAT), -1);
+		return (printf(ARG_STR_FORMAT), -1);
 	while (*s == '+')
 		s++;
 	if (!*s)
@@ -48,9 +48,9 @@ static int	ft_atoi_error(char *s, unsigned int *num)
 	return (0);
 }
 
-static int input_num_too_long(char **argv)
+static int	input_num_too_long(char **argv)
 {
-	int len;
+	int	len;
 
 	while (*argv)
 	{
@@ -67,7 +67,7 @@ static int input_num_too_long(char **argv)
 	return (0);
 }
 
-int parse_args(int argc, char **argv, t_main *main)
+int	parse_args(int argc, char **argv, t_simulation *sim)
 {
 	if (argc != 5 && argc != 6)
 	{
@@ -75,18 +75,18 @@ int parse_args(int argc, char **argv, t_main *main)
 		return (-1);
 	}
 	if (input_num_too_long(argv) == -1
-		|| ft_atoi_error(argv[1], &(main->num_philos)) == -1
-		|| ft_atoi_error(argv[2], &(main->eat_to_die_duration)) == -1
-		|| ft_atoi_error(argv[3], &(main->eat_duration)) == -1
-		|| ft_atoi_error(argv[4], &(main->sleep_duration)) == -1)
+		|| ft_atoi_error(argv[1], &(sim->num_philos)) == -1
+		|| ft_atoi_error(argv[2], &(sim->eat_to_die_duration)) == -1
+		|| ft_atoi_error(argv[3], &(sim->eat_duration)) == -1
+		|| ft_atoi_error(argv[4], &(sim->sleep_duration)) == -1)
 		return (-1);
 	if (argc == 6)
 	{
-		if (ft_atoi_error(argv[5], &(main->num_eats_to_end)) == -1)
+		if (ft_atoi_error(argv[5], &(sim->num_eats_to_end)) == -1)
 			return (-1);
 	}
 	else
-		main->num_eats_to_end = 0;
+		sim->num_eats_to_end = 0;
 	/* if very small ms inputs are causing problems later, force to provide e.g. at least 100 ms or at least display a warning that behavior will be inconsistent/undefined*/
 	return (0);
 }

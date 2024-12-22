@@ -6,42 +6,44 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:58:29 by anaqvi            #+#    #+#             */
-/*   Updated: 2024/12/21 17:17:25 by anaqvi           ###   ########.fr       */
+/*   Updated: 2024/12/22 12:49:41 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
-#define PHILO_H
+# define PHILO_H
 
-#include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <limits.h>
+# include <pthread.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <limits.h>
 
-#define MAX_RUNTIME_MS (60 * 60 * 1000U)
-#define ARGS_FORMAT "Usage: ./philo number_of_philosophers time_to_die \
+# define MAX_RUNTIME_MS 37200000U // 1 hour (60 * 60 * 1000)
+# define ARGS_FORMAT "Usage: ./philo number_of_philosophers time_to_die \
 time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
-#define ARG_STR_FORMAT "Each argument must be a positive (non-zero) number \
+# define ARG_STR_FORMAT "Each argument must be a positive (non-zero) number \
 (without non_numeric characters) that fits inside UINT_MAX (4,294,967,295)\n"
 
 typedef struct s_philosopher
 {
-	unsigned int id;
+	unsigned int	philo_id;
+	pthread_t		thread_id;
 	//
 }	t_philosopher;
 
-typedef struct s_main
+typedef struct s_simulation
 {
-	unsigned int num_philos;
-	unsigned int eat_to_die_duration;
-	unsigned int eat_duration;
-	unsigned int sleep_duration;
-	unsigned int num_eats_to_end;
+	unsigned int	num_philos;
+	unsigned int	eat_to_die_duration;
+	unsigned int	eat_duration;
+	unsigned int	sleep_duration;
+	unsigned int	num_eats_to_end;
+	t_philosopher	*philos_array;
+	pthread_mutex_t	*forks_array;
+	int				sim_should_stop;
 	//
-}	t_main;
+}	t_simulation;
 
-
-
-int parse_args(int argc, char **argv, t_main *main);
+int	parse_args(int argc, char **argv, t_simulation *main);
 
 #endif

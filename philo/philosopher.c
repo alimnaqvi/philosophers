@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:55:07 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/24 19:09:40 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/24 21:12:46 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,45 @@ static void	philo_eat(t_philosopher *philo)
 	print_state(TAKE_FORK, philo);
 	print_state(EAT, philo);
 	if (!(sim->sim_should_stop))
-		usleep(sim->eat_duration * 1000);
+		usleep(sim->time_to_eat * 1000);
 	pthread_mutex_unlock(&(sim->forks_array[fork1_index]));
 	pthread_mutex_unlock(&(sim->forks_array[fork2_index]));
+	philo->last_meal_time = get_time_ms();
 	philo->times_eaten++;
 	check_all_times_eaten(sim);
+}
+
+static void	philo_sleep(t_philosopher *philo)
+{
+	t_simulation	*sim;
+	unsigned int	philo_id;
+
+	sim = philo->sim;
+	philo_id = philo->philo_id;
+	if (sim->time_to_sleep + BUFFER_TIME_MS < sim->time_to_die
+		&& !(sim->sim_should_stop))
+	{
+		print_state(SLEEP, philo);
+		usleep(sim->time_to_sleep * 1000);
+	}
+}
+
+static void	philo_think(t_philosopher *philo)
+{
+	t_simulation	*sim;
+	unsigned int	philo_id;
+	unsigned int	time_since_meal;
+	int				time_to_think;
+
+	sim = philo->sim;
+	philo_id = philo->philo_id;
+	time_since_meal = get_time_ms() - philo->last_meal_time;
+	time_to_think = sim->time_to_die - time_since_meal - BUFFER_TIME_MS;
+	if (time_to_think > 0 && !(sim->sim_should_stop))
+	{
+		print_state(THINK, philo);
+		usleep(time_to_think * 1000);
+	}
 }
 
 void	*philosophize(void *arg)
@@ -82,11 +116,9 @@ void	*philosophize(void *arg)
 	sim = philo->sim;
 	while (!(sim->sim_should_stop))
 	{
+		philo_think(philo);
 		philo_eat(philo);
-		if (!(sim->sim_should_stop))
-			philo_sleep(philo);
-		if (!(sim->sim_should_stop))
-			philo_think(philo);
+		philo_sleep(philo);
 		if (get_time_ms() - philo->sim->start_time > MAX_RUNTIME_MS)
 			break ;
 	}

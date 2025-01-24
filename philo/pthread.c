@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:39:10 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/24 19:03:03 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/24 21:29:32 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,11 @@ int init_threads(t_simulation *sim)
 		sim->philos_array[i].philo_id = i + 1;
 		sim->philos_array[i].sim = sim;
 		sim->philos_array[i].times_eaten = 0;
-		sim->philos_array[i].is_sated = 0;
+		sim->philos_array[i].last_meal_time = sim->start_time;
 		i++;
 	}
+	if (pthread_create(&(sim->monitoring_thread), NULL, death_monitoring, sim))
+		return (printf("Failed to create monitoring thread\n"), -1);
 	return (0);
 }
 
@@ -64,6 +66,8 @@ int wait_threads(t_simulation *sim)
 			return (printf("Failed to join thread %d\n", i + 1), -1);
 		i++;
 	}
+	if (pthread_join(sim->monitoring_thread, NULL))
+		return (printf("Failed to join monitoring thread\n"), -1);
 	return (0);
 }
 

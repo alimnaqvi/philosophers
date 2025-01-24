@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:10:22 by anaqvi            #+#    #+#             */
-/*   Updated: 2024/12/22 12:17:27 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/24 20:46:48 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ int	parse_args(int argc, char **argv, t_simulation *sim)
 	}
 	if (input_num_too_long(argv) == -1
 		|| ft_atoi_error(argv[1], &(sim->num_philos)) == -1
-		|| ft_atoi_error(argv[2], &(sim->eat_to_die_duration)) == -1
-		|| ft_atoi_error(argv[3], &(sim->eat_duration)) == -1
-		|| ft_atoi_error(argv[4], &(sim->sleep_duration)) == -1)
+		|| ft_atoi_error(argv[2], &(sim->time_to_die)) == -1
+		|| ft_atoi_error(argv[3], &(sim->time_to_eat)) == -1
+		|| ft_atoi_error(argv[4], &(sim->time_to_sleep)) == -1)
 		return (-1);
 	if (argc == 6)
 	{

@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:58:29 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/24 19:05:00 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/24 21:26:29 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/time.h>
 # include <unistd.h>
 
+# define BUFFER_TIME_MS 5U
 # define MAX_RUNTIME_MS 37200000U // 1 hour (60 * 60 * 1000)
 # define ARGS_FORMAT "Usage: ./philo number_of_philosophers time_to_die \
 time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
@@ -33,6 +34,7 @@ struct s_philosopher
 {
 	unsigned int	philo_id;
 	pthread_t		thread_id;
+	long			last_meal_time;
 	unsigned int	times_eaten;
 	t_simulation	*sim;
 	//
@@ -42,13 +44,14 @@ struct s_simulation
 {
 	long	start_time;
 	unsigned int	num_philos;
-	unsigned int	eat_to_die_duration;
-	unsigned int	eat_duration;
-	unsigned int	sleep_duration;
+	unsigned int	time_to_die;
+	unsigned int	time_to_eat;
+	unsigned int	time_to_sleep;
 	unsigned int	num_eats_to_end;
 	t_philosopher	*philos_array;
 	pthread_mutex_t	*forks_array;
 	pthread_mutex_t	*print_lock;
+	pthread_t		monitoring_thread;
 	int				sim_should_stop;
 	//
 };
@@ -70,6 +73,8 @@ int		wait_threads(t_simulation *sim);
 void	destroy_mutexes(t_simulation *sim);
 
 void	*philosophize(void *arg);
+
+void	*death_monitoring(void *arg);
 
 long	get_time_ms();
 void	ft_free_all(t_simulation *sim);

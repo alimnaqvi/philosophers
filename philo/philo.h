@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:58:29 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/23 18:53:54 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/24 19:05:00 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,14 @@ struct s_philosopher
 {
 	unsigned int	philo_id;
 	pthread_t		thread_id;
+	unsigned int	times_eaten;
 	t_simulation	*sim;
 	//
 };
 
 struct s_simulation
 {
-	unsigned long	start_time;
+	long	start_time;
 	unsigned int	num_philos;
 	unsigned int	eat_to_die_duration;
 	unsigned int	eat_duration;
@@ -47,10 +48,31 @@ struct s_simulation
 	unsigned int	num_eats_to_end;
 	t_philosopher	*philos_array;
 	pthread_mutex_t	*forks_array;
+	pthread_mutex_t	*print_lock;
 	int				sim_should_stop;
 	//
 };
 
-int	parse_args(int argc, char **argv, t_simulation *main);
+typedef enum e_action
+{
+	TAKE_FORK,
+	EAT,
+	SLEEP,
+	THINK,
+	DIE,
+}	t_action;
+
+int		parse_args(int argc, char **argv, t_simulation *main);
+
+int		init_threads(t_simulation *sim);
+int		init_mutexes(t_simulation *sim);
+int		wait_threads(t_simulation *sim);
+void	destroy_mutexes(t_simulation *sim);
+
+void	*philosophize(void *arg);
+
+long	get_time_ms();
+void	ft_free_all(t_simulation *sim);
+void	print_state(t_action action, t_philosopher *philo);
 
 #endif

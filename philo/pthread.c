@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:39:10 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/24 21:29:32 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/25 12:23:31 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int init_mutexes(t_simulation *sim)
 			return (printf("Failed to create fork mutex %d\n", i + 1), -1);
 		i++;
 	}
-	if (pthread_mutex_init(sim->print_lock, NULL))
+	if (pthread_mutex_init(&(sim->print_lock), NULL))
 		return (printf("Failed to create print mutex\n"), -1);
 	return (0);
 }
@@ -82,7 +82,6 @@ void	destroy_mutexes(t_simulation *sim)
 			printf("Failed to destroy fork mutex %d\n", i + 1);
 		i++;
 	}
-	if (pthread_mutex_destroy(sim->print_lock))
+	if (pthread_mutex_destroy(&(sim->print_lock)))
 		printf("Failed to destroy print mutex\n");
-	// destroy any other mutexes, if any
 }

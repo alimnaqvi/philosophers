@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:59:04 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/24 21:59:40 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/25 13:19:18 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,26 @@ void	*death_monitoring(void *arg)
 {
 	unsigned int	i;
 	t_simulation	*sim;
+	long			cur_time;
 
 	sim = (t_simulation *)arg;
-	i = 0;
-	while (i < sim->num_philos)
+	while (1)
 	{
-		if (get_time_ms() - sim->philos_array[i].last_meal_time > sim->time_to_die)
+		i = 0;
+		while (i < sim->num_philos)
 		{
-			sim->sim_should_stop = 1;
-			pthread_mutex_lock(sim->print_lock);
-			print_state(DIE, &(sim->philos_array[i]));
-			pthread_mutex_unlock(sim->print_lock);
-			return (NULL);
+			cur_time = get_time_ms() - sim->start_time;
+			if (get_time_ms() - sim->philos_array[i].last_meal_time > sim->time_to_die)
+			{
+				sim->sim_should_stop = 1;
+				pthread_mutex_lock(&(sim->print_lock));
+				printf("%ld %u died\n", cur_time, sim->philos_array[i].philo_id);
+				pthread_mutex_unlock(&(sim->print_lock));
+				return (NULL);
+			}
+			i++;
 		}
 		usleep(1000);
-		i++;
 	}
 	return (NULL);
 }

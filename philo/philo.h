@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:58:29 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/24 21:26:29 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/25 12:22:52 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ struct s_philosopher
 	long			last_meal_time;
 	unsigned int	times_eaten;
 	t_simulation	*sim;
-	//
 };
 
 struct s_simulation
@@ -50,10 +49,9 @@ struct s_simulation
 	unsigned int	num_eats_to_end;
 	t_philosopher	*philos_array;
 	pthread_mutex_t	*forks_array;
-	pthread_mutex_t	*print_lock;
+	pthread_mutex_t	print_lock;
 	pthread_t		monitoring_thread;
 	int				sim_should_stop;
-	//
 };
 
 typedef enum e_action

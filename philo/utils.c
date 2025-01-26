@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:41:55 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/25 13:10:39 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/26 18:13:32 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	print_state(t_action action, t_philosopher *philo)
 {
 	long	cur_time;
 
-	if (!(philo->sim->sim_should_stop))
+	if (!sim_should_stop(philo->sim))
 	{
 		pthread_mutex_lock(&(philo->sim->print_lock));
 		cur_time = get_time_ms() - philo->sim->start_time;
@@ -54,4 +54,24 @@ void	print_state(t_action action, t_philosopher *philo)
 			printf("%ld %u died\n", cur_time, philo->philo_id);
 		pthread_mutex_unlock(&(philo->sim->print_lock));
 	}	
+}
+
+int	sim_should_stop(t_simulation *sim)
+{
+	int	should_stop;
+
+	// usleep(500); // this is not a pretty solution and still doesn't solve the problem fully; find alternative
+	pthread_mutex_lock(&(sim->sim_stop_lock));
+	should_stop = sim->sim_should_stop;
+	pthread_mutex_unlock(&(sim->sim_stop_lock));
+	return (should_stop);
+}
+
+void	ft_mssleep(unsigned int ms, t_simulation *sim)
+{
+	long	sleep_start_time;
+
+	sleep_start_time = get_time_ms();
+	while (get_time_ms() < sleep_start_time + ms && !sim_should_stop(sim))
+		usleep(100);
 }

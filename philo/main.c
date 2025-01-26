@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:59:04 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/26 14:59:05 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/26 18:53:32 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ void	*death_monitoring(void *arg)
 		{
 			if (get_time_ms() - sim->philos_array[i].last_meal_time > sim->time_to_die)
 			{
+				pthread_mutex_lock(&(sim->sim_stop_lock));
 				sim->sim_should_stop = 1;
+				pthread_mutex_unlock(&(sim->sim_stop_lock));
 				pthread_mutex_lock(&(sim->print_lock));
 				printf("%ld %u died\n", get_time_ms() - sim->start_time, sim->philos_array[i].philo_id);
 				pthread_mutex_unlock(&(sim->print_lock));
@@ -33,7 +35,7 @@ void	*death_monitoring(void *arg)
 			}
 			i++;
 		}
-		usleep(1000);
+		usleep(100);
 	}
 	return (NULL);
 }

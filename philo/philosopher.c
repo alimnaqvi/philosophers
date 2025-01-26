@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:55:07 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/26 15:55:37 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/26 18:14:02 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,11 @@ static void	check_all_times_eaten(t_simulation *sim)
 		i++;
 	}
 	if (count_sated >= sim->num_philos)
+	{
+		pthread_mutex_lock(&(sim->sim_stop_lock));
 		sim->sim_should_stop = 1;
+		pthread_mutex_unlock(&(sim->sim_stop_lock));
+	}
 }
 
 static void	determine_fork_indexes(unsigned int *fork1_index,
@@ -56,8 +60,8 @@ static void	philo_eat(t_philosopher *philo)
 
 	sim = philo->sim;
 	if (philo->sim->num_philos == 1)
-		usleep(sim->time_to_die * 1000);
-	if (!(sim->sim_should_stop))
+		ft_mssleep(sim->time_to_die, sim);
+	if (!sim_should_stop(sim))
 	{
 		determine_fork_indexes(&fork1_index, &fork2_index, philo);
 		pthread_mutex_lock(&(sim->forks_array[fork1_index]));
@@ -65,11 +69,11 @@ static void	philo_eat(t_philosopher *philo)
 		pthread_mutex_lock(&(sim->forks_array[fork2_index]));
 		print_state(TAKE_FORK, philo);
 		print_state(EAT, philo);
-		if (!(sim->sim_should_stop))
-			usleep(sim->time_to_eat * 1000);
+		philo->last_meal_time = get_time_ms();
+		if (!sim_should_stop(sim))
+			ft_mssleep(sim->time_to_eat, sim);
 		pthread_mutex_unlock(&(sim->forks_array[fork1_index]));
 		pthread_mutex_unlock(&(sim->forks_array[fork2_index]));
-		philo->last_meal_time = get_time_ms();
 		philo->times_eaten++;
 		check_all_times_eaten(sim);
 	}
@@ -81,27 +85,32 @@ static void	philo_sleep(t_philosopher *philo)
 
 	sim = philo->sim;
 	if (sim->time_to_sleep + BUFFER_TIME_MS < sim->time_to_die
-		&& !(sim->sim_should_stop))
+		&& !sim_should_stop(sim))
 	{
 		print_state(SLEEP, philo);
-		usleep(sim->time_to_sleep * 1000);
+		ft_mssleep(sim->time_to_sleep, sim); // better to turn into ft_usleep
 	}
 }
 
 static void	philo_think(t_philosopher *philo)
 {
 	t_simulation	*sim;
-	unsigned int	time_since_meal;
-	int				time_to_think;
+	// unsigned int	time_since_meal;
+	// int				time_to_think;
 
 	sim = philo->sim;
-	time_since_meal = get_time_ms() - philo->last_meal_time;
-	time_to_think = sim->time_to_die - time_since_meal - BUFFER_TIME_MS;
-	if (time_to_think > 0 && !(sim->sim_should_stop))
+	if (!sim_should_stop(sim))
 	{
 		print_state(THINK, philo);
-		usleep(time_to_think * 1000);
 	}
+	// sim = philo->sim;
+	// time_since_meal = get_time_ms() - philo->last_meal_time;
+	// time_to_think = sim->time_to_die - time_since_meal - BUFFER_TIME_MS;
+	// if (time_to_think > 0 && !(sim->sim_should_stop))
+	// {
+	// 	print_state(THINK, philo);
+	// 	usleep(time_to_think * 1000);
+	// }
 }
 
 void	*philosophize(void *arg)
@@ -113,7 +122,7 @@ void	*philosophize(void *arg)
 	if (!philo || !(philo->sim))
 		return (NULL);
 	sim = philo->sim;
-	while (!(sim->sim_should_stop))
+	while (!sim_should_stop(sim))
 	{
 		philo_think(philo);
 		philo_eat(philo);

@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:39:10 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/25 12:23:31 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/26 17:33:33 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int init_mutexes(t_simulation *sim)
 	}
 	if (pthread_mutex_init(&(sim->print_lock), NULL))
 		return (printf("Failed to create print mutex\n"), -1);
+	if (pthread_mutex_init(&(sim->sim_stop_lock), NULL))
+		return (printf("Failed to create sim stop mutex\n"), -1);
 	return (0);
 }
 
@@ -84,4 +86,6 @@ void	destroy_mutexes(t_simulation *sim)
 	}
 	if (pthread_mutex_destroy(&(sim->print_lock)))
 		printf("Failed to destroy print mutex\n");
+	if (pthread_mutex_destroy(&(sim->sim_stop_lock)))
+		printf("Failed to destroy sim stop mutex\n");
 }

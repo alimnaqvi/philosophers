@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:58:29 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/26 15:41:24 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/26 18:13:32 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ struct s_simulation
 	t_philosopher	*philos_array;
 	pthread_mutex_t	*forks_array;
 	pthread_mutex_t	print_lock;
+	pthread_mutex_t	sim_stop_lock;
 	pthread_t		monitoring_thread;
 	int				sim_should_stop;
 };
@@ -79,5 +80,7 @@ void	*death_monitoring(void *arg);
 long	get_time_ms();
 void	ft_free_all(t_simulation *sim);
 void	print_state(t_action action, t_philosopher *philo);
+int		sim_should_stop(t_simulation *sim);
+void	ft_mssleep(unsigned int ms, t_simulation *sim);
 
 #endif

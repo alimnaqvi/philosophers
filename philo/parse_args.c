@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:10:22 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/26 15:17:53 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/26 18:58:09 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static int	input_num_too_long(char **argv)
 {
 	int	len;
 
+	argv++;
 	while (*argv)
 	{
 		len = 0;

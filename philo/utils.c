@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:41:55 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/26 19:52:44 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/26 20:27:16 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ void	print_state(t_action action, t_philosopher *philo)
 {
 	long	cur_time;
 
+	pthread_mutex_lock(&(philo->sim->print_lock));
 	if (!sim_should_stop(philo->sim))
 	{
-		pthread_mutex_lock(&(philo->sim->print_lock));
 		cur_time = get_time_ms() - philo->sim->start_time;
 		if (action == TAKE_FORK)
 			printf("%ld %u has taken a fork\n", cur_time, philo->philo_id);
@@ -52,8 +52,8 @@ void	print_state(t_action action, t_philosopher *philo)
 			printf("%ld %u is thinking\n", cur_time, philo->philo_id);
 		else if (action == DIE)
 			printf("%ld %u died\n", cur_time, philo->philo_id);
-		pthread_mutex_unlock(&(philo->sim->print_lock));
 	}	
+	pthread_mutex_unlock(&(philo->sim->print_lock));
 }
 
 int	sim_should_stop(t_simulation *sim)

@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:58:29 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/26 19:57:24 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/26 20:51:07 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,15 @@
 
 # define BUFFER_TIME_MS 5U
 # define MAX_RUNTIME_MS 37200000U // 1 hour (60 * 60 * 1000)
-# define ARGS_FORMAT "Invalid arguments.\n\
+# define ARGS_FORMAT "Invalid number of arguments.\n\
 Usage: ./philo number_of_philosophers time_to_die \
 time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
-# define ARG_STR_FORMAT "Invalid arguments.\n\
+# define ARG_STR_FORMAT "Invalid argument(s).\n\
 Each argument must be a positive (non-zero) number \
 (without non_numeric characters) that fits inside UINT_MAX (4,294,967,295)\n"
+# define PHILO_N_FORMAT "Invalid argument.\n\
+Woah there! Such a large number of philosophers can break the system. \
+This program accepts no more than 1000 philosophers.\n"
 
 typedef struct s_philosopher	t_philosopher;
 typedef struct s_simulation		t_simulation;

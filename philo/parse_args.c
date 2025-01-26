@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:10:22 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/26 18:58:09 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/26 20:47:06 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ int	parse_args(int argc, char **argv, t_simulation *sim)
 	}
 	else
 		sim->num_eats_to_end = 0;
+	if (sim->num_philos > 1000)
+		return(printf("%s: " PHILO_N_FORMAT, argv[1]), -1);
 	/* if very small ms inputs are causing problems later, force to provide e.g. at least 100 ms or at least display a warning that behavior will be inconsistent/undefined*/
 	return (0);
 }

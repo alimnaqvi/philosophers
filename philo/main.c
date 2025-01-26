@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:59:04 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/26 19:45:55 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/26 20:42:51 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,12 @@ void	*death_monitoring(void *arg)
 				pthread_mutex_lock(&(sim->print_lock));
 				printf("%ld %u died\n", get_time_ms() - sim->start_time, sim->philos_array[i].philo_id);
 				pthread_mutex_unlock(&(sim->print_lock));
+				usleep(500);
 				return (NULL);
 			}
 			i++;
 		}
-		usleep(100);
+		usleep(1000);
 	}
 	return (NULL);
 }

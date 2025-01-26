@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:39:10 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/26 17:33:33 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/26 19:53:53 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ int init_threads(t_simulation *sim)
 	i = 0;
 	while (i < sim->num_philos)
 	{
-		if (pthread_create(&(sim->philos_array[i].thread_id), NULL, philosophize, &(sim->philos_array[i])))
-			return (printf("Failed to create thread %d\n", i + 1), -1);
 		sim->philos_array[i].philo_id = i + 1;
 		sim->philos_array[i].sim = sim;
 		sim->philos_array[i].times_eaten = 0;
 		sim->philos_array[i].last_meal_time = sim->start_time;
+		if (pthread_create(&(sim->philos_array[i].thread_id), NULL, philosophize, &(sim->philos_array[i])))
+			return (printf("Failed to create thread %d\n", i + 1), -1);
 		i++;
 	}
 	if (pthread_create(&(sim->monitoring_thread), NULL, death_monitoring, sim))
@@ -54,6 +54,10 @@ int init_mutexes(t_simulation *sim)
 		return (printf("Failed to create print mutex\n"), -1);
 	if (pthread_mutex_init(&(sim->sim_stop_lock), NULL))
 		return (printf("Failed to create sim stop mutex\n"), -1);
+	if (pthread_mutex_init(&(sim->last_meal_time_lock), NULL))
+		return (printf("Failed to create \"last meal time\" mutex\n"), -1);
+	if (pthread_mutex_init(&(sim->times_eaten_lock), NULL))
+		return (printf("Failed to create times eaten mutex\n"), -1);
 	return (0);
 }
 
@@ -88,4 +92,8 @@ void	destroy_mutexes(t_simulation *sim)
 		printf("Failed to destroy print mutex\n");
 	if (pthread_mutex_destroy(&(sim->sim_stop_lock)))
 		printf("Failed to destroy sim stop mutex\n");
+	if (pthread_mutex_destroy(&(sim->last_meal_time_lock)))
+		printf("Failed to destroy \"last meal time\" mutex\n");
+	if (pthread_mutex_destroy(&(sim->times_eaten_lock)))
+		printf("Failed to destroy times eaten mutex\n");
 }

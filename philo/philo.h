@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:58:29 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/26 18:13:32 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/26 19:57:24 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ struct s_simulation
 	pthread_mutex_t	*forks_array;
 	pthread_mutex_t	print_lock;
 	pthread_mutex_t	sim_stop_lock;
+	pthread_mutex_t	last_meal_time_lock;
+	pthread_mutex_t	times_eaten_lock;
 	pthread_t		monitoring_thread;
 	int				sim_should_stop;
 };
@@ -82,5 +84,7 @@ void	ft_free_all(t_simulation *sim);
 void	print_state(t_action action, t_philosopher *philo);
 int		sim_should_stop(t_simulation *sim);
 void	ft_mssleep(unsigned int ms, t_simulation *sim);
+long	get_last_meal_time(t_philosopher *philo);
+unsigned int	get_times_eaten(t_philosopher *philo);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:55:07 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/26 18:14:02 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/26 19:59:23 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	check_all_times_eaten(t_simulation *sim)
 	i = 0;
 	while (i < sim->num_philos)
 	{
-		if (sim->philos_array[i].times_eaten >= sim->num_eats_to_end)
+		if (get_times_eaten(&(sim->philos_array[i])) >= sim->num_eats_to_end)
 			count_sated++;
 		i++;
 	}
@@ -69,12 +69,16 @@ static void	philo_eat(t_philosopher *philo)
 		pthread_mutex_lock(&(sim->forks_array[fork2_index]));
 		print_state(TAKE_FORK, philo);
 		print_state(EAT, philo);
+		pthread_mutex_lock(&(sim->last_meal_time_lock));
 		philo->last_meal_time = get_time_ms();
+		pthread_mutex_unlock(&(sim->last_meal_time_lock));
 		if (!sim_should_stop(sim))
 			ft_mssleep(sim->time_to_eat, sim);
 		pthread_mutex_unlock(&(sim->forks_array[fork1_index]));
 		pthread_mutex_unlock(&(sim->forks_array[fork2_index]));
+		pthread_mutex_lock(&(sim->times_eaten_lock));
 		philo->times_eaten++;
+		pthread_mutex_unlock(&(sim->times_eaten_lock));
 		check_all_times_eaten(sim);
 	}
 }

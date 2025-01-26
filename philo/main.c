@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:59:04 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/26 18:53:32 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/26 19:45:55 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	*death_monitoring(void *arg)
 	while (1)
 	{
 		i = 0;
-		while (i < sim->num_philos)
+		while (i < sim->num_philos && !sim_should_stop(sim))
 		{
-			if (get_time_ms() - sim->philos_array[i].last_meal_time > sim->time_to_die)
+			if (get_time_ms() - get_last_meal_time(&(sim->philos_array[i])) > sim->time_to_die)
 			{
 				pthread_mutex_lock(&(sim->sim_stop_lock));
 				sim->sim_should_stop = 1;

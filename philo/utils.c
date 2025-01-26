@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:41:55 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/26 18:13:32 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/26 19:52:44 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,24 @@ void	ft_mssleep(unsigned int ms, t_simulation *sim)
 	sleep_start_time = get_time_ms();
 	while (get_time_ms() < sleep_start_time + ms && !sim_should_stop(sim))
 		usleep(100);
+}
+
+long	get_last_meal_time(t_philosopher *philo)
+{
+	long	last_meal_time;
+
+	pthread_mutex_lock(&(philo->sim->last_meal_time_lock));
+	last_meal_time = philo->last_meal_time;
+	pthread_mutex_unlock(&(philo->sim->last_meal_time_lock));
+	return (last_meal_time);
+}
+
+unsigned int	get_times_eaten(t_philosopher *philo)
+{
+	unsigned int	times_eaten;
+
+	pthread_mutex_lock(&(philo->sim->times_eaten_lock));
+	times_eaten = philo->times_eaten;
+	pthread_mutex_unlock(&(philo->sim->times_eaten_lock));
+	return (times_eaten);
 }

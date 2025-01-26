@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:55:07 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/25 13:04:36 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/26 15:55:37 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,6 @@ unsigned int *fork2_index, t_philosopher *philo)
 		*fork1_index = philo->philo_id - 1;
 		*fork2_index = philo->philo_id;
 	}
-	// else if (philo->sim->num_philos == 1)
-	// {
-	// 	*fork1_index = 0;
-	// 	*fork2_index = philo->philo_id - 1;
-	// }
 	else
 	{
 		*fork1_index = 0;
@@ -126,6 +121,5 @@ void	*philosophize(void *arg)
 		if (get_time_ms() - philo->sim->start_time > MAX_RUNTIME_MS)
 			break ;
 	}
-	// printf("Philo %u has been created at %ld!\n", philo->philo_id, get_time_ms() - sim->start_time);
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:58:29 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/25 12:22:52 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/26 15:41:24 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@
 
 # define BUFFER_TIME_MS 5U
 # define MAX_RUNTIME_MS 37200000U // 1 hour (60 * 60 * 1000)
-# define ARGS_FORMAT "Usage: ./philo number_of_philosophers time_to_die \
+# define ARGS_FORMAT "Invalid arguments.\n\
+Usage: ./philo number_of_philosophers time_to_die \
 time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
-# define ARG_STR_FORMAT "Each argument must be a positive (non-zero) number \
+# define ARG_STR_FORMAT "Invalid arguments.\n\
+Each argument must be a positive (non-zero) number \
 (without non_numeric characters) that fits inside UINT_MAX (4,294,967,295)\n"
 
 typedef struct s_philosopher	t_philosopher;

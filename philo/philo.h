@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:58:29 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/27 14:28:13 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/27 15:03:59 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@
 # define ARGS_FORMAT "Invalid number of arguments.\n\
 Usage: ./philo number_of_philosophers time_to_die \
 time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
-# define ARG_STR_FORMAT "Invalid argument(s).\n\
-Each argument must be a positive (non-zero) number \
-(without non_numeric characters) that fits inside UINT_MAX (4,294,967,295). \
-The times must be at least 10 ms. Max number of philosophers allowed is 1000.\n"
+# define ARG_STR_FORMAT "Invalid argument(s). \
+Please note the following rules:\n\
+- Each argument must be a positive (non-zero) number \
+(without non_numeric characters) that fits inside UINT_MAX (4,294,967,295).\n\
+- The times (to die, eat, and sleep) must be at least 10 ms.\n\
+- Max number of philosophers allowed is 1000.\n"
 # define PHILO_N_FORMAT "Invalid argument.\n\
 Woah there! Such a large number of philosophers can break the system. \
 This program accepts no more than 1000 philosophers.\n"
@@ -84,12 +86,10 @@ void			*philosophize(void *arg);
 void			check_all_times_eaten(t_simulation *sim);
 void			*death_monitoring(void *arg);
 
-long			get_time_ms();
-void			ft_free_all(t_simulation *sim);
+long			get_time_ms(void);
 void			print_state(t_action action, t_philosopher *philo);
 int				sim_should_stop(t_simulation *sim);
 void			ft_mssleep(unsigned int ms, t_simulation *sim);
 long			get_last_meal_time(t_philosopher *philo);
-unsigned int	get_times_eaten(t_philosopher *philo);
 
 #endif

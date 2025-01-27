@@ -2,5 +2,5 @@
 test*
 a.out*
 *.o
-philo
-/42PhilosophersHelper
+philo/philo
+philo/42PhilosophersHelper

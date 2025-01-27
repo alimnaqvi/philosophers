@@ -6,13 +6,13 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:39:10 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/27 13:53:08 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/27 14:56:41 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int init_threads(t_simulation *sim)
+int	init_threads(t_simulation *sim)
 {
 	unsigned int	i;
 
@@ -27,7 +27,8 @@ int init_threads(t_simulation *sim)
 		sim->philos_array[i].sim = sim;
 		sim->philos_array[i].times_eaten = 0;
 		sim->philos_array[i].last_meal_time = sim->start_time;
-		if (pthread_create(&(sim->philos_array[i].thread_id), NULL, philosophize, &(sim->philos_array[i])))
+		if (pthread_create(&(sim->philos_array[i].thread_id), NULL,
+				philosophize, &(sim->philos_array[i])))
 			return (printf("Failed to create thread %d\n", i + 1), -1);
 		i++;
 	}
@@ -36,7 +37,7 @@ int init_threads(t_simulation *sim)
 	return (0);
 }
 
-int init_mutexes(t_simulation *sim)
+int	init_mutexes(t_simulation *sim)
 {
 	unsigned int	i;
 
@@ -61,7 +62,7 @@ int init_mutexes(t_simulation *sim)
 	return (0);
 }
 
-int wait_threads(t_simulation *sim)
+int	wait_threads(t_simulation *sim)
 {
 	unsigned int	i;
 

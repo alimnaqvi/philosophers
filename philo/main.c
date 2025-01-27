@@ -6,44 +6,29 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:59:04 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/27 11:58:45 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/27 14:45:26 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*death_monitoring(void *arg)
+static void	ft_free_all(t_simulation *sim)
 {
-	unsigned int	i;
-	t_simulation	*sim;
-
-	sim = (t_simulation *)arg;
-	while (!sim_should_stop(sim))
+	if (sim && sim->forks_array)
 	{
-		i = 0;
-		while (i < sim->num_philos && !sim_should_stop(sim))
-		{
-			if (get_time_ms() - get_last_meal_time(&(sim->philos_array[i])) > sim->time_to_die)
-			{
-				pthread_mutex_lock(&(sim->sim_stop_lock));
-				sim->sim_should_stop = 1;
-				pthread_mutex_unlock(&(sim->sim_stop_lock));
-				pthread_mutex_lock(&(sim->print_lock));
-				printf("%ld %u died\n", get_time_ms() - sim->start_time, sim->philos_array[i].philo_id);
-				pthread_mutex_unlock(&(sim->print_lock));
-				usleep(500);
-				return (NULL);
-			}
-			i++;
-		}
-		usleep(1000);
+		free(sim->forks_array);
+		sim->forks_array = NULL;
 	}
-	return (NULL);
+	if (sim && sim->philos_array)
+	{
+		free(sim->philos_array);
+		sim->philos_array = NULL;
+	}
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_simulation sim;
+	t_simulation	sim;
 
 	sim.philos_array = NULL;
 	sim.forks_array = NULL;

@@ -6,34 +6,11 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:55:07 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/27 13:54:21 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/27 13:57:39 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-static void	check_all_times_eaten(t_simulation *sim)
-{
-	unsigned int	i;
-	unsigned int	count_sated;
-
-	if (!(sim->num_eats_to_end))
-		return ;
-	count_sated = 0;
-	i = 0;
-	while (i < sim->num_philos)
-	{
-		if (get_times_eaten(&(sim->philos_array[i])) >= sim->num_eats_to_end)
-			count_sated++;
-		i++;
-	}
-	if (count_sated >= sim->num_philos)
-	{
-		pthread_mutex_lock(&(sim->sim_stop_lock));
-		sim->sim_should_stop = 1;
-		pthread_mutex_unlock(&(sim->sim_stop_lock));
-	}
-}
 
 static void	determine_fork_indexes(unsigned int *fork1_index,
 unsigned int *fork2_index, t_philosopher *philo)

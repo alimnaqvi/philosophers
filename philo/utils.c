@@ -6,32 +6,18 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:41:55 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/26 20:27:16 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/27 14:58:14 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long	get_time_ms()
+long	get_time_ms(void)
 {
 	struct timeval	tv;
-	
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-}
 
-void	ft_free_all(t_simulation *sim)
-{
-	if (sim && sim->forks_array)
-	{
-		free(sim->forks_array);
-		sim->forks_array = NULL;
-	}
-	if (sim && sim->philos_array)
-	{
-		free(sim->philos_array);
-		sim->philos_array = NULL;
-	}
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
 void	print_state(t_action action, t_philosopher *philo)
@@ -39,9 +25,9 @@ void	print_state(t_action action, t_philosopher *philo)
 	long	cur_time;
 
 	pthread_mutex_lock(&(philo->sim->print_lock));
+	cur_time = get_time_ms() - philo->sim->start_time;
 	if (!sim_should_stop(philo->sim))
 	{
-		cur_time = get_time_ms() - philo->sim->start_time;
 		if (action == TAKE_FORK)
 			printf("%ld %u has taken a fork\n", cur_time, philo->philo_id);
 		else if (action == EAT)
@@ -50,9 +36,9 @@ void	print_state(t_action action, t_philosopher *philo)
 			printf("%ld %u is sleeping\n", cur_time, philo->philo_id);
 		else if (action == THINK)
 			printf("%ld %u is thinking\n", cur_time, philo->philo_id);
-		else if (action == DIE)
-			printf("%ld %u died\n", cur_time, philo->philo_id);
-	}	
+	}
+	if (action == DIE)
+		printf("%ld %u died\n", cur_time, philo->philo_id);
 	pthread_mutex_unlock(&(philo->sim->print_lock));
 }
 
@@ -60,7 +46,6 @@ int	sim_should_stop(t_simulation *sim)
 {
 	int	should_stop;
 
-	// usleep(500); // this is not a pretty solution and still doesn't solve the problem fully; find alternative
 	pthread_mutex_lock(&(sim->sim_stop_lock));
 	should_stop = sim->sim_should_stop;
 	pthread_mutex_unlock(&(sim->sim_stop_lock));
@@ -84,14 +69,4 @@ long	get_last_meal_time(t_philosopher *philo)
 	last_meal_time = philo->last_meal_time;
 	pthread_mutex_unlock(&(philo->sim->last_meal_time_lock));
 	return (last_meal_time);
-}
-
-unsigned int	get_times_eaten(t_philosopher *philo)
-{
-	unsigned int	times_eaten;
-
-	pthread_mutex_lock(&(philo->sim->times_eaten_lock));
-	times_eaten = philo->times_eaten;
-	pthread_mutex_unlock(&(philo->sim->times_eaten_lock));
-	return (times_eaten);
 }

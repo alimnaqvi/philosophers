@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:10:22 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/27 14:39:11 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/27 14:42:29 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	parse_args(int argc, char **argv, t_simulation *sim)
 	else
 		sim->num_eats_to_end = 0;
 	if (sim->num_philos > 1000)
-		return(printf("%s: " PHILO_N_FORMAT, argv[1]), -1);
+		return (printf("%s: " PHILO_N_FORMAT, argv[1]), -1);
 	if (ms_too_small(sim))
 		return (-1);
 	return (0);

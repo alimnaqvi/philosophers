@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:58:29 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/26 20:51:07 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/27 14:28:13 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ Usage: ./philo number_of_philosophers time_to_die \
 time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
 # define ARG_STR_FORMAT "Invalid argument(s).\n\
 Each argument must be a positive (non-zero) number \
-(without non_numeric characters) that fits inside UINT_MAX (4,294,967,295)\n"
+(without non_numeric characters) that fits inside UINT_MAX (4,294,967,295). \
+The times must be at least 10 ms. Max number of philosophers allowed is 1000.\n"
 # define PHILO_N_FORMAT "Invalid argument.\n\
 Woah there! Such a large number of philosophers can break the system. \
 This program accepts no more than 1000 philosophers.\n"
@@ -38,7 +39,7 @@ typedef struct s_simulation		t_simulation;
 struct s_philosopher
 {
 	unsigned int	philo_id;
-	pthread_t		thread_id;
+	pthread_t		thread_id; // not really needed
 	long			last_meal_time;
 	unsigned int	times_eaten;
 	t_simulation	*sim;
@@ -46,7 +47,7 @@ struct s_philosopher
 
 struct s_simulation
 {
-	long	start_time;
+	long			start_time;
 	unsigned int	num_philos;
 	unsigned int	time_to_die;
 	unsigned int	time_to_eat;
@@ -71,23 +72,24 @@ typedef enum e_action
 	DIE,
 }	t_action;
 
-int		parse_args(int argc, char **argv, t_simulation *main);
+int				parse_args(int argc, char **argv, t_simulation *main);
 
-int		init_threads(t_simulation *sim);
-int		init_mutexes(t_simulation *sim);
-int		wait_threads(t_simulation *sim);
-void	destroy_mutexes(t_simulation *sim);
+int				init_threads(t_simulation *sim);
+int				init_mutexes(t_simulation *sim);
+int				wait_threads(t_simulation *sim);
+void			destroy_mutexes(t_simulation *sim);
 
-void	*philosophize(void *arg);
+void			*philosophize(void *arg);
 
-void	*death_monitoring(void *arg);
+void			check_all_times_eaten(t_simulation *sim);
+void			*death_monitoring(void *arg);
 
-long	get_time_ms();
-void	ft_free_all(t_simulation *sim);
-void	print_state(t_action action, t_philosopher *philo);
-int		sim_should_stop(t_simulation *sim);
-void	ft_mssleep(unsigned int ms, t_simulation *sim);
-long	get_last_meal_time(t_philosopher *philo);
+long			get_time_ms();
+void			ft_free_all(t_simulation *sim);
+void			print_state(t_action action, t_philosopher *philo);
+int				sim_should_stop(t_simulation *sim);
+void			ft_mssleep(unsigned int ms, t_simulation *sim);
+long			get_last_meal_time(t_philosopher *philo);
 unsigned int	get_times_eaten(t_philosopher *philo);
 
 #endif

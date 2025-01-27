@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:10:22 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/26 20:47:06 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/27 14:39:11 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,17 @@ static int	input_num_too_long(char **argv)
 	return (0);
 }
 
+static int	ms_too_small(t_simulation *sim)
+{
+	if (sim->time_to_die < 10)
+		return (printf("%u: " ARG_STR_FORMAT, sim->time_to_die), 1);
+	if (sim->time_to_eat < 10)
+		return (printf("%u: " ARG_STR_FORMAT, sim->time_to_eat), 1);
+	if (sim->time_to_sleep < 10)
+		return (printf("%u: " ARG_STR_FORMAT, sim->time_to_sleep), 1);
+	return (0);
+}
+
 int	parse_args(int argc, char **argv, t_simulation *sim)
 {
 	if (argc != 5 && argc != 6)
@@ -90,6 +101,7 @@ int	parse_args(int argc, char **argv, t_simulation *sim)
 		sim->num_eats_to_end = 0;
 	if (sim->num_philos > 1000)
 		return(printf("%s: " PHILO_N_FORMAT, argv[1]), -1);
-	/* if very small ms inputs are causing problems later, force to provide e.g. at least 100 ms or at least display a warning that behavior will be inconsistent/undefined*/
+	if (ms_too_small(sim))
+		return (-1);
 	return (0);
 }

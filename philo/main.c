@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:59:04 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/26 20:42:51 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/01/27 11:58:45 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*death_monitoring(void *arg)
 	t_simulation	*sim;
 
 	sim = (t_simulation *)arg;
-	while (1)
+	while (!sim_should_stop(sim))
 	{
 		i = 0;
 		while (i < sim->num_philos && !sim_should_stop(sim))

@@ -3,4 +3,3 @@ test*
 a.out*
 *.o
 philo/philo
-philo/42PhilosophersHelper

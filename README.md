@@ -57,5 +57,3 @@ This project provided me with hands-on experience with:
 - The program assumes that all times (to die, eat, and sleep) are provided in milliseconds and are greater than or equal to 10ms.
 - Philosophers are numbered starting from 1.
 - If only one philosopher is present, they will starve since they cannot pick up two forks.
-
-This project was an excellent introduction to the complexities of concurrent programming and provided me a strong foundation for tackling more advanced multithreading challenges.

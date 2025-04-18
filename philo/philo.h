@@ -6,7 +6,7 @@
 /*   By: anaqvi <anaqvi@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:58:29 by anaqvi            #+#    #+#             */
-/*   Updated: 2025/01/27 15:03:59 by anaqvi           ###   ########.fr       */
+/*   Updated: 2025/04/18 19:08:11 by anaqvi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_simulation		t_simulation;
 struct s_philosopher
 {
 	unsigned int	philo_id;
-	pthread_t		thread_id; // not really needed
+	pthread_t		thread_id;
 	long			last_meal_time;
 	unsigned int	times_eaten;
 	t_simulation	*sim;

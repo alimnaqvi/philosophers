@@ -1,3 +1,7 @@
+# Philosophers
+[![C](https://img.shields.io/badge/Language-C-blue.svg)](https://en.wikipedia.org/wiki/C_(programming_language))
+[![Makefile](https://img.shields.io/badge/Build-Makefile-brightgreen.svg)](https://www.gnu.org/software/make/)
+
 This is a 42 school project to learn about multithreading in C.
 
 ## Task Description

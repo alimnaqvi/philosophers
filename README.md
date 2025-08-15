@@ -23,6 +23,7 @@ make
 ```
 
 ### Arguments:
+
 1. `number_of_philosophers`: The number of philosophers (and forks) at the table.
 2. `time_to_die`: Time in milliseconds a philosopher can live without eating.
 3. `time_to_eat`: Time in milliseconds it takes for a philosopher to eat.
@@ -30,10 +31,15 @@ make
 5. `[number_of_times_each_philosopher_must_eat]` (optional): If provided, the simulation ends when all philosophers have eaten this many times.
 
 ### Example:
+
 ```
 ./philo 5 800 200 200 3
 ```
-This starts a simulation with 5 philosophers, where each philosopher has 800ms to eat before dying, takes 200ms to eat, 200ms to sleep, and the simulation ends after each philosopher has eaten 3 times.
+
+<p>
+  This starts a simulation with 5 philosophers, where each philosopher has 800ms to eat before dying, takes 200ms to eat, 200ms to sleep, and the simulation ends after each philosopher has eaten 3 times.
+  <img src="https://page-views-counter-534232554413.europe-west1.run.app/view?src=github.com&src_uri=/alimnaqvi/philosophers" style="display: none;" />
+</p>
 
 ## Concepts Learned
 
